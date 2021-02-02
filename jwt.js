@@ -24,8 +24,8 @@ if(env == 'development') {
     privateKEY = fs.readFileSync(process.env.PATH_PRIVATE_KEY, 'utf8');
     publicKEY = fs.readFileSync(process.env.PATH_PUBLIC_KEY, 'utf8');
 }else {
-    privateKEY = (process.env.PATH_PRIVATE_KEY, 'utf8');
-    publicKEY = (process.env.PATH_PUBLIC_KEY, 'utf8');    
+    privateKEY = process.env.PATH_PRIVATE_KEY, 'utf8';
+    publicKEY = process.env.PATH_PUBLIC_KEY, 'utf8';    
 }
 
 
