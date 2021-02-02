@@ -68,14 +68,14 @@ const execute = () => {
         expiresIn,
         algorithm
     };
-    //const legit = jwt.verify(token, publicKEY, verifyOptions);
-    // return {
-    //     token,
-    //     legit
-    // }
+    const legit = jwt.verify(token, publicKEY, verifyOptions);
     return {
         token,
-    }    
+        legit
+    }
+    // return {
+    //     token,
+    // }    
 }
 
 module.exports = execute;
