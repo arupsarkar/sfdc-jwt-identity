@@ -2,16 +2,16 @@
 
 ## Create X.509 Certificate using OpenSSL
 
-> openssl req -newkey rsa:2048 -new -nodes -keyout key.pem -out csr.pem
-> openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out server.crt
+> * openssl req -newkey rsa:2048 -new -nodes -keyout key.pem -out csr.pem
+> * openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out server.crt
 
 ## Create a connected app in salesforce
 
-*Attach the server.crt to the connected app
-*Attach the profiles to access the connected app
-*OAuth policies - Admin approved users are pre-authorized
-*Pre approve the app using the following URL.
-    *https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id=<consumer_key>redirect_uri=<callback_url>
+* Attach the server.crt to the connected app
+* Attach the profiles to access the connected app
+* OAuth policies - Admin approved users are pre-authorized
+* Pre approve the app using the following URL.
+    * https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id=<consumer_key>redirect_uri=<callback_url>
 
 
 ## To run it locally create a .env file with the following key value pairs
