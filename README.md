@@ -16,8 +16,8 @@
 
 ## To run it locally create a .env file with the following key value pairs
 
-SUBJECT (the username of the user to impersonate)
-CLIENT_ID (the consumer key (client_id) of the Connected App you created)
-AUDIENCE (https://login.salesforce.com or https://test.salesforce.com as appropriate)
-PATH_PRIVATE_KEY (path to the pem-file with the private key (private_key.pemfrom above)) - local, In heroku copy paste the entire content
-PATH_PUBLIC_KEY (path to the pem-file with the public key (public_key.pemfrom above)) - local, In heroku copy paste the entire content
+* SUBJECT (the username of the user to impersonate)
+* CLIENT_ID (the consumer key (client_id) of the Connected App you created)
+* AUDIENCE (https://login.salesforce.com or https://test.salesforce.com as appropriate)
+* PATH_PRIVATE_KEY (path to the pem-file with the private key (private_key.pemfrom above)) - local, In heroku copy paste the entire content
+* PATH_PUBLIC_KEY (path to the pem-file with the public key (public_key.pemfrom above)) - local, In heroku copy paste the entire content
