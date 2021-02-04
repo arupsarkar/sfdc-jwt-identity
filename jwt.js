@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 // must expire within 5 minutes for Salesforce
-const expiresIn = 5 * 60;
+const expiresIn = 60 * 60;
 // Salesforce only supports RS256
 const algorithm = "RS256";
 // issuer = client_id / consumer key of Connected App
