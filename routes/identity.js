@@ -52,7 +52,7 @@ router.get('/', function(req, res, next) {
         const url = process.env.AUDIENCE || 'https://login.salesforce.com'
         const userPayload = req.body
         const token = req.query.token
-        console.log('req.body', `${userPayload}`)        
+        console.log('req.body', userPayload)        
         console.log('req.query', token)        
         const response = await fetch(`${url}/services/data/v50.0/sobjects/User`, {
             "method": "post",
@@ -60,7 +60,7 @@ router.get('/', function(req, res, next) {
                 "content-type": "application/json",
                 "Authorization": "Bearer " + token
             },            
-            "body": `${userPayload}`
+            "body": userPayload
         })
         .then(response => {
             response.json()
