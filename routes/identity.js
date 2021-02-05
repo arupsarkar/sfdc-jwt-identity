@@ -63,7 +63,18 @@ router.get('/', function(req, res, next) {
         console.log('req.body', userPayload)        
         console.log('req.query', token)        
         const response = await conn.sobject("User").create(
-            { Name : 'My Account #1' }, 
+            { 
+                Username: req.body.Username,
+                Lastname: req.body.Lastname,
+                Email: req.body.Email,
+                Alias: req.body.Alias,
+                TimezoneSidKey: req.body.TimezoneSidKey,
+                LocaleSidKey: req.body.LocaleSidKey,
+                EmailEncodingKey: req.body.EmailEncodingKey,
+                LanguageLocaleKey: req.body.LanguageLocaleKey,
+                ProfileId: "00ef4000001zch6AAA"
+
+            }, 
             function(err, ret) {
                 if (err || !ret.success) 
                 { return console.error(err, ret); }
