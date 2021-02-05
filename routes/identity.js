@@ -44,4 +44,35 @@ router.get('/', function(req, res, next) {
         console.log(url);
     })    
   })
+
+
+  router.post("/register", async (req, res, next) => {
+
+    try{
+        const url = process.env.AUDIENCE || 'https://login.salesforce.com'
+        const userPayload = req.body
+        const token = req.query.token
+        console.log(userPayload)        
+        console.log(token)        
+        const response = await fetch(`${url}/services/data/v50.0/sobjects/User`, {
+            "method": "post",
+            "headers": {
+                "content-type": "application/json",
+                "Authorization": "Bearer " + token
+            },            
+            "body": userPayload
+        })
+        .then((response) => {
+            response.json()
+        }) 
+        .then((data) => {
+            console.log(data)
+            res.send(data)
+        })
+
+    }catch(err) {
+        console.log(err)
+    }
+
+  })
 module.exports = router;
