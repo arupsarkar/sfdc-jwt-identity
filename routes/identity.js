@@ -46,7 +46,7 @@ router.get('/', function(req, res, next) {
   })
 
 
-  router.get('/register', async (req, res, next) => {
+  router.get('/register', (req, res, next) => {
 
     try{
         const url = process.env.AUDIENCE || 'https://login.salesforce.com'
@@ -54,7 +54,7 @@ router.get('/', function(req, res, next) {
         const token = req.query.token
         console.log('req.body', userPayload)        
         console.log('req.query', token)        
-        const response = await fetch(`${url}/services/data/v50.0/sobjects/User`, {
+        fetch(`${url}/services/data/v50.0/sobjects/User`, {
             "method": "post",
             "headers": {
                 "content-type": "application/x-www-form-urlencoded",
@@ -75,4 +75,5 @@ router.get('/', function(req, res, next) {
     }
 
   })
+  
 module.exports = router;
