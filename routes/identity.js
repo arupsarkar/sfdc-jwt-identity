@@ -103,4 +103,35 @@ router.get('/', function(req, res, next) {
 
   })
 
+  router.post('/newpwd', async (req, res, next) => {
+
+    try{
+        var conn = new jsforce.Connection({
+            instanceUrl : req.query.instance_url,
+            accessToken : req.query.token
+          });
+          const url = process.env.AUDIENCE || 'https://login.salesforce.com'          
+          const userPayload = req.body
+          const token = req.query.token
+          const userId = req.query.userid          
+        const response = await fetch(`${url}/services/data/v50.0/sobjects/User/${userId}/password`, {
+            "method": "post",
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },            
+            "body": userPayload
+        })
+        .then(response => {
+            response.json()
+        }) 
+        .then(data => {
+            console.log('data -> ', data)
+            res.send(data)
+        })
+    }catch(err) {
+        res.json({"Error" : err})
+    }
+  })
+
 module.exports = router;
