@@ -46,7 +46,7 @@ router.get('/', function(req, res, next) {
   })
 
 
-  router.post("/register", async (req, res, next) => {
+  router.post('/register', async (req, res, next) => {
 
     try{
         const url = process.env.AUDIENCE || 'https://login.salesforce.com'
