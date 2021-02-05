@@ -2,6 +2,7 @@ require("dotenv").config();
 const data = (require("../jwt"))()
 const fetch = require("node-fetch");
 var express = require('express');
+var jsforce = require('jsforce');
 var router = express.Router();
 
 /* return jwt */
@@ -49,26 +50,40 @@ router.get('/', function(req, res, next) {
   router.get('/register', async (req, res, next) => {
 
     try{
+
+        
+        var conn = new jsforce.Connection({
+          instanceUrl : process.env.AUDIENCE || 'https://login.salesforce.com',
+          accessToken : req.query.token
+        });
+
         const url = process.env.AUDIENCE || 'https://login.salesforce.com'
         const userPayload = req.body
         const token = req.query.token
         console.log('req.body', userPayload)        
         console.log('req.query', token)        
-        const response = await fetch(`${url}/services/data/v50.0/sobjects/User`, {
-            "method": "post",
-            "headers": {
-                "content-type": "application/json",
-                "Authorization": "Bearer " + token
-            },            
-            "body": userPayload
-        })
-        .then(response => {
-            response.json()
-        }) 
-        .then(data => {
-            console.log('data -> ', data)
-            res.send(data)
-        })
+        const response = await conn.sobject("User").create(
+            { Name : 'My Account #1' }, 
+            function(err, ret) {
+                if (err || !ret.success) 
+                { return console.error(err, ret); }
+                    console.log("Created record id : " + ret.id);
+          });
+        // const response = await fetch(`${url}/services/data/v50.0/sobjects/User`, {
+        //     "method": "post",
+        //     "headers": {
+        //         "content-type": "application/json",
+        //         "Authorization": "Bearer " + token
+        //     },            
+        //     "body": userPayload
+        // })
+        // .then(response => {
+        //     response.json()
+        // }) 
+        // .then(data => {
+        //     console.log('data -> ', data)
+        //     res.send(data)
+        // })
 
     }catch(err) {
         console.log(err)
