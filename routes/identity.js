@@ -123,12 +123,18 @@ router.get('/', function(req, res, next) {
             "body": userPayload
         })
         .then(response => {
-            response.json()
+            status = response.status
+            console.log('status -> ', status )
+            return response.json()
         }) 
         .then(data => {
             console.log('data -> ', data)
             res.send(data)
         })
+        .catch((err) => {
+            // handle error
+            console.error(err);
+          })        
     }catch(err) {
         res.json({"Error" : err})
     }
