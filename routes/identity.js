@@ -62,10 +62,10 @@ router.get('/', function(req, res, next) {
             },            
             "body": `${userPayload}`
         })
-        .then((response) => {
+        .then(response => {
             response.json()
         }) 
-        .then((data) => {
+        .then(data => {
             console.log('data -> ', data)
             res.send(data)
         })
@@ -75,5 +75,5 @@ router.get('/', function(req, res, next) {
     }
 
   })
-  
+
 module.exports = router;
