@@ -57,7 +57,7 @@ router.get('/', function(req, res, next) {
         const response = await fetch(`${url}/services/data/v50.0/sobjects/User`, {
             "method": "post",
             "headers": {
-                "content-type": "application/json",
+                "content-type": "application/x-www-form-urlencoded",
                 "Authorization": "Bearer " + token
             },            
             "body": `${userPayload}`
