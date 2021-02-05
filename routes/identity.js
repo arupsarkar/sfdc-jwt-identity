@@ -53,7 +53,7 @@ router.get('/', function(req, res, next) {
 
         
         var conn = new jsforce.Connection({
-          instanceUrl : process.env.AUDIENCE || 'https://login.salesforce.com',
+          instanceUrl : req.query.instance_url,
           accessToken : req.query.token
         });
 
