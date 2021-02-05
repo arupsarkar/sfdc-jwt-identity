@@ -110,7 +110,7 @@ router.get('/', function(req, res, next) {
             instanceUrl : req.query.instance_url,
             accessToken : req.query.token
           });
-          const url = process.env.AUDIENCE || 'https://login.salesforce.com'          
+          const url = req.query.instance_url          
           const userPayload = req.body
           const token = req.query.token
           const userId = req.query.userid          
