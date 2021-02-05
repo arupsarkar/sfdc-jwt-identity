@@ -72,7 +72,7 @@ router.get('/', function(req, res, next) {
                 LocaleSidKey: req.body.LocaleSidKey,
                 EmailEncodingKey: req.body.EmailEncodingKey,
                 LanguageLocaleKey: req.body.LanguageLocaleKey,
-                ProfileId: "00ef4000001zch6AAA"
+                ProfileId: req.body.ProfileId
 
             }, 
             function(err, ret) {
