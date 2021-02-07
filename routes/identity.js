@@ -111,7 +111,7 @@ router.get('/', function(req, res, next) {
             accessToken : req.query.token
           });
           const host = req.query.instance_url          
-          const userPayload = req.body
+          const userPayload = Buffer.from(req.body, 'utf-8'); 
           const token = req.query.token
           const userId = req.query.userid
           const url = host + '/services/data/v50.0/sobjects/User/' + userId + '/password'
