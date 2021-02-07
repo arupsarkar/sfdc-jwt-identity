@@ -106,10 +106,6 @@ router.get('/', function(req, res, next) {
   router.post('/newpwd', async (req, res, next) => {
 
     try{
-        var conn = new jsforce.Connection({
-            instanceUrl : req.query.instance_url,
-            accessToken : req.query.token
-          });
           const host = req.query.instance_url          
           const userPayload = JSON.stringify(req.body)
           const token = req.query.token
@@ -142,6 +138,42 @@ router.get('/', function(req, res, next) {
         console.log('Error -> ', err)
         res.json({"Error" : err})
     }
+  })
+
+  router.delete('/resetpwd', async(req, res, next) => {
+    try{
+        const host = req.query.instance_url          
+        const userPayload = JSON.stringify(req.body)
+        const token = req.query.token
+        const userId = req.query.userid
+        const url = host + '/services/data/v50.0/sobjects/User/' + userId + '/password'
+        console.log('url', url)
+        console.log('body', userPayload)                     
+        const response = await fetch(url, {
+            "method": "delete",
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },            
+            "body": userPayload
+        })
+        .then(response => {
+            status = response.status
+            console.log('status -> ', status )
+            return response.json()
+        }) 
+        .then(data => {
+            console.log('data -> ', data)
+            res.send(data)
+        })
+        .catch((err) => {
+          // handle error
+          console.error(err);
+        })        
+  }catch(err) {
+      console.log('Error -> ', err)
+      res.json({"Error" : err})
+  }
   })
 
 module.exports = router;
