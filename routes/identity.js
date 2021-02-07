@@ -110,11 +110,13 @@ router.get('/', function(req, res, next) {
             instanceUrl : req.query.instance_url,
             accessToken : req.query.token
           });
-          const url = req.query.instance_url          
+          const host = req.query.instance_url          
           const userPayload = req.body
           const token = req.query.token
-          const userId = req.query.userid          
-        const response = await fetch(`${url}/services/data/v50.0/sobjects/User/${userId}/password`, {
+          const userId = req.query.userid
+          const url = host + '/services/data/v50.0/sobjects/User/' + userId + '/password'
+          console.log('url', url)           
+        const response = await fetch(url, {
             "method": "post",
             "headers": {
                 "Content-Type": "application/json",
@@ -136,6 +138,7 @@ router.get('/', function(req, res, next) {
             console.error(err);
           })        
     }catch(err) {
+        console.log('Error -> ', err)
         res.json({"Error" : err})
     }
   })
