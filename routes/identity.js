@@ -111,12 +111,12 @@ router.get('/', function(req, res, next) {
             accessToken : req.query.token
           });
           const host = req.query.instance_url          
-          const userPayload = req.body
+          const userPayload = JSON.parse(req.body)
           const token = req.query.token
           const userId = req.query.userid
           const url = host + '/services/data/v50.0/sobjects/User/' + userId + '/password'
           console.log('url', url)
-          console.log('body', userPayload)                     
+          console.log('body', JSON.stringify(userPayload))                     
         const response = await fetch(url, {
             "method": "post",
             "headers": {
