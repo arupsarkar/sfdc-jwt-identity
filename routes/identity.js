@@ -38,6 +38,15 @@ router.get('/', function(req, res, next) {
     }) 
   })
 
+  router.get('/sfdc-token', async (req, res, next) => {
+
+    try{
+        const response = await  res.json({"data": "hell0"})
+    }catch(err) {
+        console.log('Error', err)
+    }
+  })
+
   router.get('/token', (req, res, next) => {
     const url = process.env.AUDIENCE || 'https://login.salesforce.com';
 
