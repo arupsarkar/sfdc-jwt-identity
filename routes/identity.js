@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
     getJWTAssertiontoken(subject)
         .then((data) => {
             console.log('JWT Received ', data)
-            await fetch(`${url}/services/oauth2/token`, {
+            const response = await fetch(`${url}/services/oauth2/token`, {
                 "method": "post",
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded"
