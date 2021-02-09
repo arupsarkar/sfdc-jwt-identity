@@ -9,9 +9,9 @@ var router = express.Router();
 /* return jwt */
 router.get('/', function(req, res, next) {
     let token = data.jwt_assertion('b.tom+123@example.com');
-    console.log(`Response : \n${token}\n\n`);
+    console.log('Response : ' , JSON.stringify(token));
     console.log(`Json Web Token:\n${data.token}\n\n`);
-    console.log(`JWT verification result:\n ${JSON.stringify(data.legit)}`);    
+    // console.log(`JWT verification result:\n ${JSON.stringify(data.legit)}`);    
     res.send(data.token);
   });
 
