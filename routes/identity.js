@@ -7,7 +7,8 @@ var router = express.Router();
 
 /* return jwt */
 router.get('/', function(req, res, next) {
-
+    let token = data.execute();
+    console.log(`Response : \n${token}\n\n`);
     console.log(`Json Web Token:\n${data.token}\n\n`);
     console.log(`JWT verification result:\n ${JSON.stringify(data.legit)}`);    
     res.send(data.token);
