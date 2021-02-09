@@ -37,7 +37,7 @@ console.log('audience', audience)
 
 function jwt_assertion(sub) {
     const subject = sub || process.env.SUBJECT
-    console.log('subject : ' + subject)
+    console.log('subject : ', subject)
     // additonal payload to add
     const additionalPayload = {
     };
