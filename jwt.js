@@ -30,7 +30,7 @@ if(env == 'development') {
 
 
 console.log('issuer', issuer)
-console.log('subject', subject)
+// console.log('subject', subject)
 console.log('private key', privateKEY)
 console.log('public key', publicKEY)
 console.log('audience', audience)
