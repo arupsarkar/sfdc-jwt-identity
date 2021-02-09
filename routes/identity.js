@@ -38,10 +38,10 @@ router.get('/', function(req, res, next) {
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded"
                 },
-                //"body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${data}`
-                "body": "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=" + data
+                "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${data}`
+                //"body": "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=" + data
             }).then(resp => {
-                console.log('Resolved ', JSON.stringify(resp))
+                //console.log('Resolved ', JSON.stringify(resp))
                 resp.json()
             }).then(data => {
                     if (data != undefined) {
