@@ -26,19 +26,32 @@ router.get('/', function(req, res, next) {
     }
   }
 
-  router.get('/token', async (req, res, next) => {
+  router.get('/jwt-token', async (req, res, next) => {
+    let subject = req.query.subject      
+    const response = await  getJWTAssertiontoken(subject)
+    .then((data) => {
+        console.log('JWT Received ', response)
+        res.json({"jwt-token": data})
+    })
+    .catch((error) => {
+        res.json("jwt-error", error)
+    }) 
+  })
+
+  router.get('/token', (req, res, next) => {
     const url = process.env.AUDIENCE || 'https://login.salesforce.com';
 
-    let subject = req.query.subject
-    const response = await  getJWTAssertiontoken(subject)
-        .then((response) => {
-            console.log('JWT Received ', response)
+    //let subject = req.query.subject
+    let jwt_token = req.query.token
+    // const response = await  getJWTAssertiontoken(subject)
+    //     .then((response) => {
+    //         console.log('JWT Received ', response)
             fetch(`${url}/services/oauth2/token`, {
                 "method": "post",
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded"
                 },
-                "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${response}`
+                "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt_token}`
                 //"body": "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=" + data
             }).then(resp => {
                 //console.log('Resolved ', JSON.stringify(resp))
@@ -67,9 +80,9 @@ router.get('/', function(req, res, next) {
 
             })                
 
-        }).catch((err) => {
-            console.log('Error fetching JWT', err)
-        }) 
+        // }).catch((err) => {
+        //     console.log('Error fetching JWT', err)
+        // }) 
 
   })
 
