@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
         res.json({"jwt-token": data})
     })
     .catch((error) => {
-        res.json("jwt-error", error)
+        res.json({"jwt-error": error})
     }) 
   })
 
