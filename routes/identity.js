@@ -42,7 +42,7 @@ router.get('/', function(req, res, next) {
                 console.log('Resolved ', JSON.stringify(resp))
                 resp.json()
             }).then(data => {
-                    if (data.error) {
+                    if (data.error != undefined) {
                         console.log('Error Resolved :', data)
                         return console.log(data);
                     }
