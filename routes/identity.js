@@ -29,9 +29,9 @@ router.get('/', function(req, res, next) {
   router.get('/jwt-token', async (req, res, next) => {
     let subject = req.query.subject      
     const response = await  getJWTAssertiontoken(subject)
-    .then((data) => {
+    .then((response) => {
         console.log('JWT Received ', response)
-        res.json({"jwt-token": data})
+        res.json({"jwt-token": response})
     })
     .catch((error) => {
         res.json({"jwt-error": error})
