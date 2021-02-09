@@ -52,7 +52,6 @@ router.get('/', function(req, res, next) {
             
                 // compute url
                 let url;
-                if(data != undefined) {
                     if (data.hasOwnProperty("sfdc_community_url")) {
                         // community user
                         let idx = data.sfdc_community_url.lastIndexOf("/");
@@ -63,7 +62,6 @@ router.get('/', function(req, res, next) {
                     }
                     console.log(`Access token: ${data.access_token} `);
                     console.log('Instance URL : ', url);
-                }
 
             })                
 
