@@ -38,13 +38,16 @@ router.get('/', function(req, res, next) {
                     "content-type": "application/x-www-form-urlencoded"
                 },
                 "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${data}`
-            }).then(resp => 
-                    resp.json()
-                    
-                ).then(data => {
-                    if (data.error) 
+            }).then(resp => {
+                console.log('Resolved ', JSON.stringify(resp))
+                resp.json()
+            }).then(data => {
+                    if (data.error) {
+                        console.log('Error Resolved :', data)
                         return console.log(data);
-                console.log(data);
+                    }
+                        
+                console.log('Output : ', data);
                 res.send(data)
             
                 // compute url
@@ -58,7 +61,7 @@ router.get('/', function(req, res, next) {
                     url = `${data.instance_url}/secur/frontdoor.jsp?sid=${data.access_token}`;
                 }
                 console.log(`Access token: ${data.access_token} `);
-                console.log(url);
+                console.log('Instance URL : ', url);
             })                
 
         }).catch((err) => {
