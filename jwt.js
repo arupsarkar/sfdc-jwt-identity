@@ -35,6 +35,51 @@ console.log('private key', privateKEY)
 console.log('public key', publicKEY)
 console.log('audience', audience)
 
+function jwt_assertion(sub) {
+    const username = sub || subject
+    console.log('subject : ' + username)
+    // additonal payload to add
+    const additionalPayload = {
+    };
+
+    // specify main payload
+    var signOptions = {
+        issuer,
+        username,
+        audience,
+        expiresIn,
+        algorithm,
+    };
+
+    // add thumbprint of certificate if using with azure
+    if (process.env.CERTIFICATE_THUMBPRINT) {
+        signOptions.header = {
+            "x5t": process.env.CERTIFICATE_THUMBPRINT
+        }
+    }
+
+    // sign token with private key
+    const token = jwt.sign(additionalPayload, privateKEY, signOptions);
+    console.log('token', token);
+
+    // verify that it was signed correctly
+    const verifyOptions = {
+        issuer,
+        subject,
+        audience,
+        expiresIn,
+        algorithm
+    };
+    // const legit = jwt.verify(token, publicKEY, verifyOptions);
+    // return {
+    //     token,
+    //     legit
+    // }
+    return {
+        token,
+    }
+}
+
 const execute = () => {
     // additonal payload to add
     const additionalPayload = {
@@ -78,4 +123,5 @@ const execute = () => {
     }    
 }
 
-module.exports = execute;
+// module.exports = execute;
+module.exports = {jwt_assertion};
