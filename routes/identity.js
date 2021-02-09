@@ -1,5 +1,6 @@
 require("dotenv").config();
-const data = (require("../jwt"))()
+//const data = (require("../jwt"))()
+const data = require("../jwt")
 const fetch = require("node-fetch");
 var express = require('express');
 var jsforce = require('jsforce');
