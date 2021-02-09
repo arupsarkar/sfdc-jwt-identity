@@ -52,7 +52,7 @@ router.get('/', function(req, res, next) {
         }).then(resp => resp.json()).then(data => {
             if (data.error) return console.log(data);
             console.log(data);
-        
+            res.json(data)
             // compute url
             let url;
             if (data.hasOwnProperty("sfdc_community_url")) {
