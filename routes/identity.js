@@ -17,9 +17,9 @@ router.get('/', function(req, res, next) {
 
   async function getJWTAssertiontoken(subject) {
 
-    let data = await data.jwt_assertion(subject)
-    if(data != undefined) {
-        return data.token
+    let jwt_data = await data.jwt_assertion(subject)
+    if(jwt_data.token != undefined) {
+        return jwt_data.token
     }else {
         throw new Error('There was a problem generating JWT Assertion')
     }
