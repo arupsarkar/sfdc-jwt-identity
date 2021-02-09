@@ -31,14 +31,14 @@ router.get('/', function(req, res, next) {
 
     let subject = req.query.subject
     const response = await  getJWTAssertiontoken(subject)
-        .then((data) => {
-            console.log('JWT Received ', data)
+        .then((response) => {
+            console.log('JWT Received ', response)
             fetch(`${url}/services/oauth2/token`, {
                 "method": "post",
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded"
                 },
-                "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${data}`
+                "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${response}`
                 //"body": "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=" + data
             }).then(resp => {
                 //console.log('Resolved ', JSON.stringify(resp))
