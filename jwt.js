@@ -12,7 +12,7 @@ const algorithm = "RS256";
 // issuer = client_id / consumer key of Connected App
 const issuer = process.env.CLIENT_ID;
 // subject = the username of the user in Salesforce we're requesting an access token for
-const subject = process.env.SUBJECT;
+//const subject = process.env.SUBJECT;
 // audience = where is this JWT any good (https://login.salesforce.com, https://test.salesforce.com or commmunity url
 const audience = process.env.AUDIENCE || 'https://login.salesforce.com';
 
@@ -36,7 +36,7 @@ console.log('public key', publicKEY)
 console.log('audience', audience)
 
 function jwt_assertion(sub) {
-    const username = sub || subject
+    const subject = sub || process.env.SUBJECT
     console.log('subject : ' + username)
     // additonal payload to add
     const additionalPayload = {
@@ -45,7 +45,7 @@ function jwt_assertion(sub) {
     // specify main payload
     var signOptions = {
         issuer,
-        username,
+        subject,
         audience,
         expiresIn,
         algorithm,
