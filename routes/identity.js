@@ -19,6 +19,7 @@ router.get('/', function(req, res, next) {
 
     let jwt_data = await data.jwt_assertion(subject)
     if(jwt_data.token != undefined) {
+        console.log('Returning JWT ', jwt_data.token)
         return jwt_data.token
     }else {
         throw new Error('There was a problem generating JWT Assertion')
@@ -31,7 +32,7 @@ router.get('/', function(req, res, next) {
     let subject = req.query.subject
     getJWTAssertiontoken(subject)
         .then((data) => {
-
+            console.log('JWT Received ', data)
             fetch(`${url}/services/oauth2/token`, {
                 "method": "post",
                 "headers": {
