@@ -30,10 +30,10 @@ router.get('/', function(req, res, next) {
     const url = process.env.AUDIENCE || 'https://login.salesforce.com';
 
     let subject = req.query.subject
-    getJWTAssertiontoken(subject)
+    const response = await  getJWTAssertiontoken(subject)
         .then((data) => {
             console.log('JWT Received ', data)
-            const response = await fetch(`${url}/services/oauth2/token`, {
+            fetch(`${url}/services/oauth2/token`, {
                 "method": "post",
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded"
