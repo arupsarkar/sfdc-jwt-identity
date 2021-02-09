@@ -41,7 +41,31 @@ router.get('/', function(req, res, next) {
   router.get('/sfdc-token', async (req, res, next) => {
 
     try{
-        const response = await  res.json({"data": "hell0"})
+        const token = req.query.token
+        const url = process.env.AUDIENCE || 'https://login.salesforce.com';
+        const response = await fetch(`${url}/services/oauth2/token`, {
+            "method": "post",
+            "headers": {
+                "content-type": "application/x-www-form-urlencoded"
+            },
+            "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${token}`
+        }).then(resp => resp.json()).then(data => {
+            if (data.error) return console.log(data);
+            console.log(data);
+        
+            // compute url
+            let url;
+            if (data.hasOwnProperty("sfdc_community_url")) {
+                // community user
+                let idx = data.sfdc_community_url.lastIndexOf("/");
+                let retURL = `${data.sfdc_community_url.substring(idx)}/s`;
+                url = `${data.sfdc_community_url}/secur/frontdoor.jsp?sid=${data.access_token}&retURL=${retURL}`;
+            } else {
+                url = `${data.instance_url}/secur/frontdoor.jsp?sid=${data.access_token}`;
+            }
+            console.log(`Access token: ${data.access_token} `);
+            console.log(url);
+        })
     }catch(err) {
         console.log('Error', err)
     }
