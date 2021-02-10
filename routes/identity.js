@@ -55,7 +55,7 @@ router.get('/', function(req, res, next) {
                 },
                 "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${response}`
             }).then(resp => resp.json()).then(data => {
-                if (data.error) return console.log('error 1 : ', data);
+                if (data.error) res.json(data)//return console.log('error 1 : ', data);
                 console.log('error 2 : ', data);
                 res.json(data)
                 // compute url
