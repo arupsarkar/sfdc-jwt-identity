@@ -41,31 +41,66 @@ router.get('/', function(req, res, next) {
   router.get('/sfdc-token', async (req, res, next) => {
 
     try{
-        const token = req.query.token
+        // const token = req.query.token
+        let subject = req.query.subject              
         const url = process.env.AUDIENCE || 'https://login.salesforce.com';
-        const response = await fetch(`${url}/services/oauth2/token`, {
-            "method": "post",
-            "headers": {
-                "content-type": "application/x-www-form-urlencoded"
-            },
-            "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${token}`
-        }).then(resp => resp.json()).then(data => {
-            if (data.error) return console.log(data);
-            console.log(data);
-            res.json(data)
-            // compute url
-            let url;
-            if (data.hasOwnProperty("sfdc_community_url")) {
-                // community user
-                let idx = data.sfdc_community_url.lastIndexOf("/");
-                let retURL = `${data.sfdc_community_url.substring(idx)}/s`;
-                url = `${data.sfdc_community_url}/secur/frontdoor.jsp?sid=${data.access_token}&retURL=${retURL}`;
-            } else {
-                url = `${data.instance_url}/secur/frontdoor.jsp?sid=${data.access_token}`;
-            }
-            console.log(`Access token: ${data.access_token} `);
-            console.log(url);
+        const response = await getJWTAssertiontoken(subject)
+        .then((response) => {
+            console.log('JWT Received ', response)
+            // res.json({"jwt-token": response})
+            fetch(`${url}/services/oauth2/token`, {
+                "method": "post",
+                "headers": {
+                    "content-type": "application/x-www-form-urlencoded"
+                },
+                "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${response}`
+            }).then(resp => resp.json()).then(data => {
+                if (data.error) return console.log(data);
+                console.log(data);
+                res.json(data)
+                // compute url
+                let url;
+                if (data.hasOwnProperty("sfdc_community_url")) {
+                    // community user
+                    let idx = data.sfdc_community_url.lastIndexOf("/");
+                    let retURL = `${data.sfdc_community_url.substring(idx)}/s`;
+                    url = `${data.sfdc_community_url}/secur/frontdoor.jsp?sid=${data.access_token}&retURL=${retURL}`;
+                } else {
+                    url = `${data.instance_url}/secur/frontdoor.jsp?sid=${data.access_token}`;
+                }
+                console.log(`Access token: ${data.access_token} `);
+                console.log(url);
+            })            
         })
+        .catch((error) => {
+            res.json({"jwt-error": error})
+        }) 
+        
+        
+        
+        // fetch(`${url}/services/oauth2/token`, {
+        //     "method": "post",
+        //     "headers": {
+        //         "content-type": "application/x-www-form-urlencoded"
+        //     },
+        //     "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${token}`
+        // }).then(resp => resp.json()).then(data => {
+        //     if (data.error) return console.log(data);
+        //     console.log(data);
+        //     res.json(data)
+        //     // compute url
+        //     let url;
+        //     if (data.hasOwnProperty("sfdc_community_url")) {
+        //         // community user
+        //         let idx = data.sfdc_community_url.lastIndexOf("/");
+        //         let retURL = `${data.sfdc_community_url.substring(idx)}/s`;
+        //         url = `${data.sfdc_community_url}/secur/frontdoor.jsp?sid=${data.access_token}&retURL=${retURL}`;
+        //     } else {
+        //         url = `${data.instance_url}/secur/frontdoor.jsp?sid=${data.access_token}`;
+        //     }
+        //     console.log(`Access token: ${data.access_token} `);
+        //     console.log(url);
+        // })
     }catch(err) {
         console.log('Error', err)
     }
