@@ -26,6 +26,32 @@ router.get('/', function(req, res, next) {
     }
   }
 
+  async function getSfdcToken() {
+    let jwt_data = await data.jwt_assertion()
+        .then(response => {
+            console.log('response ', response)
+        })
+        .catch(err => {
+            console.log('error ', err)
+        }) 
+    console.log('assertion : ', this.jwt_data.token)
+    const url = process.env.AUDIENCE || 'https://login.salesforce.com';
+    let sfdc_token = await fetch(`${url}/services/oauth2/token`, {
+        "method": "post",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded"
+        },
+        "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${this.jwt_data.token}`
+    }).then(resp => resp.json()).then(data => {
+        if (data.error) res.json(data)//return console.log('error 1 : ', data);
+        console.log('error 2 : ', data);
+        res.json(data)
+        // compute url
+        console.log(`Access token: ${data.access_token} `);
+        console.log(url);
+    })            
+  }
+
   router.get('/jwt-token', async (req, res, next) => {
     let subject = req.query.subject      
     const response = await  getJWTAssertiontoken(subject)
@@ -158,52 +184,41 @@ router.get('/', function(req, res, next) {
 
     try{
 
-        
-        var conn = new jsforce.Connection({
-          instanceUrl : req.query.instance_url,
-          accessToken : req.query.token
-        });
+        const response = await getSfdcToken()
+        .then((response) => {
+            res.json(response)
+        }).catch((error) => {
+            res.json(error)
+        })        
+        // var conn = new jsforce.Connection({
+        //   instanceUrl : req.query.instance_url,
+        //   accessToken : req.query.token
+        // });
 
-        const url = process.env.AUDIENCE || 'https://login.salesforce.com'
-        const userPayload = req.body
-        const token = req.query.token
-        console.log('req.body', userPayload)        
-        console.log('req.query', token)        
-        const response = await conn.sobject("User").create(
-            { 
-                Username: req.body.Username,
-                Lastname: req.body.Lastname,
-                Email: req.body.Email,
-                Alias: req.body.Alias,
-                TimezoneSidKey: req.body.TimezoneSidKey,
-                LocaleSidKey: req.body.LocaleSidKey,
-                EmailEncodingKey: req.body.EmailEncodingKey,
-                LanguageLocaleKey: req.body.LanguageLocaleKey,
-                ProfileId: req.body.ProfileId
+        // const url = process.env.AUDIENCE || 'https://login.salesforce.com'
+        // const userPayload = req.body
+        // const token = req.query.token
+        // console.log('req.body', userPayload)        
+        // console.log('req.query', token)        
+        // const response = await conn.sobject("User").create(
+        //     { 
+        //         Username: req.body.Username,
+        //         Lastname: req.body.Lastname,
+        //         Email: req.body.Email,
+        //         Alias: req.body.Alias,
+        //         TimezoneSidKey: req.body.TimezoneSidKey,
+        //         LocaleSidKey: req.body.LocaleSidKey,
+        //         EmailEncodingKey: req.body.EmailEncodingKey,
+        //         LanguageLocaleKey: req.body.LanguageLocaleKey,
+        //         ProfileId: req.body.ProfileId
 
-            }, 
-            function(err, ret) {
-                if (err || !ret.success) 
-                { return console.error(err, ret); }
-                    console.log("Created record id : " + ret.id);
-                    res.json({"record_id": ret.id})
-          });
-        // const response = await fetch(`${url}/services/data/v50.0/sobjects/User`, {
-        //     "method": "post",
-        //     "headers": {
-        //         "content-type": "application/json",
-        //         "Authorization": "Bearer " + token
-        //     },            
-        //     "body": userPayload
-        // })
-        // .then(response => {
-        //     response.json()
-        // }) 
-        // .then(data => {
-        //     console.log('data -> ', data)
-        //     res.send(data)
-        // })
-
+        //     }, 
+        //     function(err, ret) {
+        //         if (err || !ret.success) 
+        //         { return console.error(err, ret); }
+        //             console.log("Created record id : " + ret.id);
+        //             res.json({"record_id": ret.id})
+        //   });
     }catch(err) {
         console.log(err)
     }
