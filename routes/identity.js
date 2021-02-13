@@ -29,12 +29,6 @@ router.get('/', function(req, res, next) {
   async function getSfdcToken() {
     console.log('invoking jwt token', 'started')
     let jwt_data = await data.jwt_assertion()
-        .then((response) => {
-            console.log('response ', response)
-        })
-        .catch((err) => {
-            console.log('error ', err)
-        }) 
     console.log('assertion : ', this.jwt_data.token)
     console.log('invoking sfdc token', 'started')
     const url = process.env.AUDIENCE || 'https://login.salesforce.com';
