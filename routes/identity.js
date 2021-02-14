@@ -186,9 +186,15 @@ router.get('/', function(req, res, next) {
 
     try{
 
-        const response = await getSfdcToken()
-        console.log(response)
-        res.json(response)
+        await getSfdcToken()
+            .then((data) => {
+                console.log('access_token', data.access_token)
+                console.log('instance_url', data.instance_url)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+
 
         // var conn = new jsforce.Connection({
         //   instanceUrl : req.query.instance_url,
