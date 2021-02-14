@@ -27,6 +27,7 @@ router.get('/', function(req, res, next) {
   }
 
   async function getSfdcToken() {
+    let payload      
     console.log('invoking jwt token', 'started')
     let jwt_data = data.jwt_assertion()
     console.log('assertion : ', jwt_data.token)
@@ -45,13 +46,16 @@ router.get('/', function(req, res, next) {
         return resp.json()
     })
     .then(data => {   
-        console.log('sfdc-token data', data)     
-        return data
+        console.log('sfdc-token data', data)    
+        payload = data 
+        //return data
     })            
     .catch(err =>{
         console.error('Error getting sfdc token : ', err);
         return err
     })
+    console.log('function finished returning data payload ', payload)
+    return payload
   }
 
   router.get('/jwt-token', async (req, res, next) => {
