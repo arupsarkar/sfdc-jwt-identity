@@ -41,10 +41,11 @@ router.get('/', function(req, res, next) {
     }).then(resp => resp.json()).then(data => {
         if (data.error) res.json(data)//return console.log('error 1 : ', data);
         console.log('error 2 : ', data);
-        res.json(data)
+        // res.json(data)
         // compute url
         console.log(`Access token: ${data.access_token} `);
         console.log(url);
+        return data
     })            
   }
 
