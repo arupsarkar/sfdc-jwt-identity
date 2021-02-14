@@ -189,19 +189,24 @@ router.get('/', function(req, res, next) {
   router.post('/register', async (req, res, next) => {
 
     try{
+        let access_token
+        let instance_url
         let payload = await getSfdcToken()
             .then((response) => {
+                access_token = response.access_token
+                instance_url = response.instance_url
                 console.log('Response ---> ', response)
+
             })
             .catch((error) => {
                 console.error('Error ---> ', error)
             })
-        console.log('Response URL ---> ', payload.instance_url)        
-        console.log('Response token  ---> ', payload.access_token)
+        console.log('Response URL ---> ', instance_url)        
+        console.log('Response token  ---> ', access_token)
 
         var conn = new jsforce.Connection({
-          instanceUrl : payload.instance_url,
-          accessToken : payload.access_token
+          instanceUrl : instance_url,
+          accessToken : access_token
         });
 
         const url = process.env.AUDIENCE || 'https://login.salesforce.com'
