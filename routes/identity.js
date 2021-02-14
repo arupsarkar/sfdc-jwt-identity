@@ -188,8 +188,7 @@ router.get('/', function(req, res, next) {
 
         await getSfdcToken()
             .then((data) => {
-                console.log('access_token', data.access_token)
-                console.log('instance_url', data.instance_url)
+                console.log('register data ---> ', data)
             })
             .catch((error) => {
                 console.error(error)
