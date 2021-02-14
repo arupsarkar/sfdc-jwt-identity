@@ -39,8 +39,12 @@ router.get('/', function(req, res, next) {
             "Content-Type": "application/x-www-form-urlencoded"
         }
     })
-    .then(resp => resp.json())
-    .then(data => {        
+    .then(resp => {
+        console.log('sfdc-token data', resp)        
+        resp.json()
+    })
+    .then(data => {   
+        console.log('sfdc-token data', data)     
         return data
     })            
     .catch(err =>{
