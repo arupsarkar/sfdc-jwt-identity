@@ -189,6 +189,8 @@ router.get('/', function(req, res, next) {
   router.post('/register', async (req, res, next) => {
 
     try{
+        let access_token
+        let instance_url
 
         let response = await getSfdcToken()
             .then((response) => {
@@ -197,38 +199,36 @@ router.get('/', function(req, res, next) {
             .catch((error) => {
                 console.error('Error ---> ', error)
             })
-        
+        console.log('Response URL ---> ', response.instance_url)        
+        console.log('Response token  ---> ', response.access_token)
 
+        var conn = new jsforce.Connection({
+          instanceUrl : response.instance_url,
+          accessToken : response.access_token
+        });
 
-        // var conn = new jsforce.Connection({
-        //   instanceUrl : req.query.instance_url,
-        //   accessToken : req.query.token
-        // });
+        const url = process.env.AUDIENCE || 'https://login.salesforce.com'
+        const userPayload = req.body
+        console.log('req.body', userPayload)        
+        const response = await conn.sobject("User").create(
+            { 
+                Username: req.body.Username,
+                Lastname: req.body.Lastname,
+                Email: req.body.Email,
+                Alias: req.body.Alias,
+                TimezoneSidKey: req.body.TimezoneSidKey,
+                LocaleSidKey: req.body.LocaleSidKey,
+                EmailEncodingKey: req.body.EmailEncodingKey,
+                LanguageLocaleKey: req.body.LanguageLocaleKey,
+                ProfileId: req.body.ProfileId
 
-        // const url = process.env.AUDIENCE || 'https://login.salesforce.com'
-        // const userPayload = req.body
-        // const token = req.query.token
-        // console.log('req.body', userPayload)        
-        // console.log('req.query', token)        
-        // const response = await conn.sobject("User").create(
-        //     { 
-        //         Username: req.body.Username,
-        //         Lastname: req.body.Lastname,
-        //         Email: req.body.Email,
-        //         Alias: req.body.Alias,
-        //         TimezoneSidKey: req.body.TimezoneSidKey,
-        //         LocaleSidKey: req.body.LocaleSidKey,
-        //         EmailEncodingKey: req.body.EmailEncodingKey,
-        //         LanguageLocaleKey: req.body.LanguageLocaleKey,
-        //         ProfileId: req.body.ProfileId
-
-        //     }, 
-        //     function(err, ret) {
-        //         if (err || !ret.success) 
-        //         { return console.error(err, ret); }
-        //             console.log("Created record id : " + ret.id);
-        //             res.json({"record_id": ret.id})
-        //   });
+            }, 
+            function(err, ret) {
+                if (err || !ret.success) 
+                { return console.error(err, ret); }
+                    console.log("Created record id : " + ret.id);
+                    res.json({"record_id": ret.id})
+          });
     }catch(err) {
         console.log(err)
     }
