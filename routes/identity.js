@@ -32,22 +32,21 @@ router.get('/', function(req, res, next) {
     console.log('assertion : ', jwt_data.token)
     console.log('invoking sfdc token', 'started')
     const url = process.env.AUDIENCE || 'https://login.salesforce.com';
-    let sfdc_token = await fetch(`${url}/services/oauth2/token`, {
-        "method": "post",
-        "headers": {
-            "content-type": "application/x-www-form-urlencoded"
-        },
-        "body": `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt_data.token}`
-    }).then(resp => resp.json()).then(data => {
-        if (data.error) res.json(data)//return console.log('error 1 : ', data);
+    await fetch(`${url}/services/oauth2/token`, {
+        method: 'POST',
+        body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt_data.token}`,        
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    })
+    .then(resp => resp.json())
+    .then(data => {        
         return data
-        //console.log('error 2 : ', data);
-        // res.json(data)
-        // compute url
-        // console.log(`Access token: ${data.access_token} `);
-        // console.log(url);
-        //return data
     })            
+    .catch(err =>{
+        console.error('Error getting sfdc token : ', err);
+        return err
+    })
   }
 
   router.get('/jwt-token', async (req, res, next) => {
@@ -183,11 +182,8 @@ router.get('/', function(req, res, next) {
     try{
 
         const response = await getSfdcToken()
-        .then((response) => {
-            res.json(response)
-        }).catch((error) => {
-            res.json(error)
-        })        
+        res.json(response)
+
         // var conn = new jsforce.Connection({
         //   instanceUrl : req.query.instance_url,
         //   accessToken : req.query.token
