@@ -186,13 +186,8 @@ router.get('/', function(req, res, next) {
 
     try{
 
-        await getSfdcToken()
-            .then((data) => {
-                console.log('register data ---> ', data)
-            })
-            .catch((error) => {
-                console.error(error)
-            })
+        let data = await getSfdcToken()
+        console.log('register data ---> ', data)
 
 
         // var conn = new jsforce.Connection({
