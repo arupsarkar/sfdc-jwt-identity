@@ -40,8 +40,9 @@ router.get('/', function(req, res, next) {
         }
     })
     .then(resp => {
-        console.log('sfdc-token data', resp)        
-        resp.json()
+        console.log('sfdc-token resp', resp)        
+        // resp.json()
+        return resp.json()
     })
     .then(data => {   
         console.log('sfdc-token data', data)     
@@ -186,6 +187,7 @@ router.get('/', function(req, res, next) {
     try{
 
         const response = await getSfdcToken()
+        console.log(response)
         res.json(response)
 
         // var conn = new jsforce.Connection({
