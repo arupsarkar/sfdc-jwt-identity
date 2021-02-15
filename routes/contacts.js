@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
       });
 
       let contacts = [];
-      let soql = 'SELECT Id, FirstName, LastName, Email, MobilePhone from Contact';
+      let soql = 'SELECT Id, FirstName, LastName, Email, MobilePhone from Contact ORDER BY LastModifiedDate DESC';
       let query = await conn.query(soql)
           .on("record", (record) => {
               console.log('record ', JSON.stringify(record))
