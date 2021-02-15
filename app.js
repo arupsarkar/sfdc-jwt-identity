@@ -8,6 +8,7 @@ let cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var identityRouter = require('./routes/identity');
+var contactsRouter = require('./routes/contacts');
 
 var app = express();
 
