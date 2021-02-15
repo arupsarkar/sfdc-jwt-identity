@@ -3,7 +3,7 @@ var express = require('express');
 var jsforce = require('jsforce');
 var router = express.Router();
 
-router.get('/', async (ereq, res, next) => {
+router.get('/', async (req, res, next) => {
     let access_token = req.query.access_token
     let instance_url = req.query.instance_url
 
@@ -16,6 +16,7 @@ router.get('/', async (ereq, res, next) => {
       let soql = 'SELECT Id, FirstName, LastName, Email. MobilePhone from Contact';
       let query = await conn.query(soql)
           .on("record", (record) => {
+              console.log('record ', JSON.stringify(record))
               contacts.push(record);
           })
           .on("end", async () => {
