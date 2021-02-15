@@ -25,6 +25,7 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/jwt', identityRouter);
+app.use('/contacts', contactsRouter);
 
 
 // catch 404 and forward to error handler

@@ -30,3 +30,5 @@ router.get('/', async (ereq, res, next) => {
               maxFetch: 5000
           });
 })
+
+module.exports = router;
